@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://internshipproject-backend.onrender.com", // ✅ backend base URL
+  baseURL: "https://mis-backend-8mrz.onrender.com", // ✅ backend base URL
   headers: {
     "Content-Type": "application/json",
   },
