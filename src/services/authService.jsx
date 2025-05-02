@@ -10,8 +10,8 @@ export const register = (userData) => {
 
 // User Login
 export const login = (userData) => {
-  return axios.post(`${API_URL}/login`, userData);
-};
+    return axios.post(`${API_URL}/login`, userData);
+  };
 
 // Forgot Password
 export const forgotPassword = (email) => {
