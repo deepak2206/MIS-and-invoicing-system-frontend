@@ -2,8 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 
-import GroupDashboard from "./components/GroupDashboard";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Dashboard"; // create your own dummy dashboard if needed
 
 function App() {
   return (

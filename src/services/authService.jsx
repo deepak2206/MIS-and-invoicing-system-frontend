@@ -7,9 +7,10 @@ export const register = (userData) => {
   return axios.post(`${API_URL}/register`, userData);
 };
 
+
 export const login = (userData) => {
-  return axios.post('/api/auth/login', userData);
-};
+    return axios.post(`${API_URL}/login`, userData);
+  };
 
 
 export const forgotPassword = (email) => {
