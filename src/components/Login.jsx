@@ -13,18 +13,13 @@ function Login() {
     e.preventDefault();
     try {
       const res = await login(user);
-      if (res.data.token) {
-        localStorage.setItem('token', res.data.token);
-        toast.success('Login Successful!');
-        navigate('/dashboard');
-      } else {
-        toast.error('Login Failed! Invalid response from server.');
-      }
+      localStorage.setItem('token', res.data);
+      toast.success('Login Successful!');
+      navigate('/dashboard');
     } catch (error) {
       toast.error('Login Failed! Check Credentials.');
     }
   };
-  
 
   return (
     <div className="auth-container">
