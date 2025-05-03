@@ -1,0 +1,132 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .top-navbar {
+    background: #f8f9fa;
+    padding: 10px 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .section-title {
+    margin-left: 10px;
+    color: gray;
+  }
+  
+  .user {
+    font-weight: normal;
+  }
+  
+  .tabs {
+    background: #fff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    gap: 15px;
+  }
+  
+  .tab {
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  .tab.active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+  .dashboard {
+    padding: 30px;
+  }
+  
+  .total-groups {
+    background: #dc3545;
+    color: white;
+    padding: 20px;
+    width: 180px;
+    text-align: center;
+    border-radius: 4px;
+    margin-bottom: 30px;
+  }
+  
+  .count-box {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .add-form {
+    margin-bottom: 30px;
+  }
+  
+  .add-form input {
+    padding: 6px;
+    margin-right: 10px;
+    width: 300px;
+  }
+  
+  .add-form button {
+    background: #198754;
+    color: white;
+    padding: 6px 15px;
+    border: none;
+  }
+  
+  .error-msg {
+    color: red;
+    margin-top: 5px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .edit-btn {
+    background: #ffc107;
+    border: none;
+    padding: 5px 10px;
+  }
+  /* Top Navbar */
+.top-navbar {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .top-navbar .user a {
+    color: #007bff;
+  }
+  
+  .tab-bar {
+    background-color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  
+  .tab-link {
+    cursor: pointer;
+    color: #495057;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .tab-link:hover {
+    background-color: #f1f1f1;
+    color: #000;
+  }
+  
+  .tab-link.active {
+    color: #0d6efd;
+    border-bottom: 2px solid #0d6efd;
+  }
+  
