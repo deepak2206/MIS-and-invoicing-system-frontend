@@ -1,16 +1,14 @@
-import axios from './axios';
+import axios from 'axios';
 
-export const register = (userData) => axios.post('/api/auth/register', userData);
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
+});
 
-// export const login = (userData) => axios.post('/api/auth/login', userData);
+export const register = (userData) => API.post('/auth/register', userData);
 
+export const login = (userData) => API.post('/auth/login', userData);
 
-export const login = async (userData) => {
-  try {
-    const res = await axios.post('/api/auth/login', userData);
-    return res;
-  } catch (err) {
-    console.error('Login error:', err.response);
-    throw err;
-  }
-};
+export const logout = () => API.post('/auth/logout');
+
+export const getSessionUser = () => API.get('/auth/session-user');
