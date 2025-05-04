@@ -10,13 +10,17 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await login(user);
+      console.log('Sending login', user);
+const res = await login(user);
+
       localStorage.setItem('token', res.data); // Save JWT token
       toast.success('Login Successful!');
       navigate('/dashboard');
     } catch (err) {
-      toast.error('Login Failed!');
+      toast.error(err.response?.data || 'Login Failed!');
+      console.error('Login Failed:', err.response);
     }
+    
   };
 
   return (
