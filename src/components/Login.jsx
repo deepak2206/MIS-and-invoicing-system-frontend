@@ -34,6 +34,17 @@ const Login = () => {
         required
       />
       <button type="submit">Login</button>
+      
+      <p style={{ marginTop: '1rem' }}>
+        Don't have an account?{' '}
+        <button
+          type="button"
+          onClick={() => navigate('/register')}
+          style={{ color: 'blue', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}
+        >
+          Register
+        </button>
+      </p>
     </form>
   );
 };
