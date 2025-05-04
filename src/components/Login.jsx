@@ -10,17 +10,21 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Sending login', user);
-const res = await login(user);
-
-      localStorage.setItem('token', res.data); // Save JWT token
-      toast.success('Login Successful!');
-      navigate('/dashboard');
+      const res = await login(user);
+      console.log('Login response:', res);
+      
+      if (res.data) {
+        localStorage.setItem('token', res.data);
+        toast.success('Login Successful!');
+        navigate('/dashboard');
+      } else {
+        toast.error('Invalid response from server');
+      }
     } catch (err) {
-      toast.error(err.response?.data || 'Login Failed!');
-      console.error('Login Failed:', err.response);
+      console.error('Full error:', err);
+      console.error('Error response:', err.response);
+      toast.error(err.response?.data?.message || err.message || 'Login Failed!');
     }
-    
   };
 
   return (
