@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { login } from "../services/authService";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "../styles/AuthStyles.css";
+import { useState } from 'react';
+import { login } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 function Login() {
   const [user, setUser] = useState({ email: '', passwordHash: '' });
@@ -13,47 +11,26 @@ function Login() {
     e.preventDefault();
     try {
       const res = await login(user);
-      localStorage.setItem('token', res.data);
+      localStorage.setItem('token', res.data); // Save JWT token
       toast.success('Login Successful!');
       navigate('/dashboard');
-    } catch (error) {
-      toast.error('Login Failed! Check Credentials.');
+    } catch (err) {
+      toast.error('Login Failed!');
     }
   };
 
   return (
-    <div className="auth-container">
+    <div>
       <ToastContainer />
-      <form onSubmit={handleSubmit} className="auth-form">
-        <h2>Login</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={user.email}
-          onChange={(e) => setUser({ ...user, email: e.target.value })}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={user.passwordHash}
-          onChange={(e) => setUser({ ...user, passwordHash: e.target.value })}
-          required
-        />
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <input placeholder="Email" type="email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} required />
+        <input placeholder="Password" type="password" value={user.passwordHash} onChange={(e) => setUser({ ...user, passwordHash: e.target.value })} required />
         <button type="submit">Login</button>
-
-        <p>Forgot your password?</p>
-        <button type="button" onClick={() => navigate('/forgot-password')}>
-          Forgot Password
-        </button>
-
-        <p>Don't have an account?</p>
-        <button type="button" onClick={() => navigate('/register')}>
-          Register
-        </button>
       </form>
     </div>
   );
 }
 
 export default Login;
+

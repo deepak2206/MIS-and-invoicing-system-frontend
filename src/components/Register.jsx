@@ -1,78 +1,37 @@
-import { useState } from "react";
-import { register } from "../services/authService";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "../styles/AuthStyles.css";
+import { useState } from 'react';
+import { register } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
-  const [user, setUser] = useState({
-    fullName: '',
-    email: '',
-    passwordHash: '',
-    role: 'USER',
-  });
+  const [user, setUser] = useState({ fullName: '', email: '', passwordHash: '', role: 'USER' });
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await register(user);
-      if (res.data.includes("Registration Successful")) {
-        toast.success(res.data);
-        navigate('/login');
-      } else {
-        toast.error(res.data); // This might be "Email already registered."
-      }
-    } catch (error) {
-      toast.error("Registration Failed! Try Again.");
-      console.error("Registration Error:", error); // 👈 Now shows in console
+      toast.success(res.data);
+      navigate('/login');
+    } catch (err) {
+      toast.error(err.response?.data || 'Registration Failed!');
     }
   };
-  
 
   return (
-    <div className="auth-container">
+    <div>
       <ToastContainer />
-      <form onSubmit={handleSubmit} className="auth-form">
-        <h2>Register</h2>
-
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={user.fullName}
-          onChange={(e) => setUser({ ...user, fullName: e.target.value })}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={user.email}
-          onChange={(e) => setUser({ ...user, email: e.target.value })}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={user.passwordHash}
-          onChange={(e) => setUser({ ...user, passwordHash: e.target.value })}
-          required
-        />
-        <select
-          value={user.role}
-          onChange={(e) => setUser({ ...user, role: e.target.value })}
-          required
-        >
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <input placeholder="Full Name" value={user.fullName} onChange={(e) => setUser({ ...user, fullName: e.target.value })} required />
+        <input placeholder="Email" type="email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} required />
+        <input placeholder="Password" type="password" value={user.passwordHash} onChange={(e) => setUser({ ...user, passwordHash: e.target.value })} required />
+        <select value={user.role} onChange={(e) => setUser({ ...user, role: e.target.value })}>
           <option value="USER">User</option>
           <option value="ADMIN">Admin</option>
         </select>
-
         <button type="submit">Register</button>
-
-        <p>Already have an account?</p>
-        <button type="button" onClick={() => navigate('/login')}>
-          Back to Login
-        </button>
       </form>
     </div>
   );
