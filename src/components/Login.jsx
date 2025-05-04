@@ -28,6 +28,9 @@ function Login() {
         <input placeholder="Password" type="password" value={user.passwordHash} onChange={(e) => setUser({ ...user, passwordHash: e.target.value })} required />
         <button type="submit">Login</button>
       </form>
+       {/* ✅ Register button below the form */}
+       <p>Don't have an account?</p>
+      <button onClick={() => navigate('/register')}>Go to Register</button>
     </div>
   );
 }
