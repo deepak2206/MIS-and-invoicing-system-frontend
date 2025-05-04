@@ -17,13 +17,19 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(user);
-      toast.success('Registration Successful! Check your email.');
-      navigate('/login');
+      const res = await register(user);
+      if (res.data.includes("Registration Successful")) {
+        toast.success(res.data);
+        navigate('/login');
+      } else {
+        toast.error(res.data); // This might be "Email already registered."
+      }
     } catch (error) {
-      toast.error('Registration Failed! Try Again.');
+      toast.error("Registration Failed! Try Again.");
+      console.error("Registration Error:", error); // 👈 Now shows in console
     }
   };
+  
 
   return (
     <div className="auth-container">
