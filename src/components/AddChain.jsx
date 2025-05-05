@@ -30,6 +30,7 @@ function AddChain() {
         gstnNo: gstn,
         group: { groupId }
       }, { withCredentials: true });
+
       navigate('/manage-chain');
     } catch (err) {
       setError(err.response?.data || 'Something went wrong');
@@ -39,6 +40,7 @@ function AddChain() {
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Add Company</h2>
+
       <div className="mb-3">
         <label className="form-label">Company Name:</label>
         <input

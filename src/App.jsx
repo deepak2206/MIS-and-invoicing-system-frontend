@@ -40,6 +40,7 @@ function App() {
         />
         <Route path="*" element={<Login />} />
         <Route path="/manage-chain" element={<ChainDashboard />} /> {/* ✅ Add this */}
+        <Route path="/add-chain" element={<AddChain />} />
       </Routes>
     </BrowserRouter>
   );
