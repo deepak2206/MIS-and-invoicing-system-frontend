@@ -9,8 +9,12 @@ const GroupDashboard = () => {
   const BASE = import.meta.env.VITE_API_BASE_URL;
 
   const fetchGroups = async () => {
-    const res = await axios.get(`${BASE}/api/groups`, { withCredentials: true });
-    setGroups(res.data);
+    try {
+      const res = await axios.get(`${BASE}/api/groups`, { withCredentials: true });
+      setGroups(res.data);
+    } catch (err) {
+      console.error("Failed to fetch groups", err);
+    }
   };
 
   useEffect(() => {
@@ -19,8 +23,12 @@ const GroupDashboard = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this group?")) {
-      await axios.delete(`${BASE}/api/groups/${id}`, { withCredentials: true });
-      fetchGroups();
+      try {
+        await axios.delete(`${BASE}/api/groups/${id}`, { withCredentials: true });
+        fetchGroups();
+      } catch (err) {
+        alert("Failed to delete group.");
+      }
     }
   };
 
@@ -31,17 +39,18 @@ const GroupDashboard = () => {
         <Link to="/dashboard" className="active">Dashboard</Link>
         <Link to="/dashboard">Manage Groups</Link>
         <Link to="/manage-chain">Manage Chain</Link>
+
         <Link to="#">Manage Brands</Link>
         <Link to="#">Manage SubZones</Link>
         <Link to="#">Manage Estimate</Link>
         <Link to="#">Manage Invoices</Link>
       </div>
 
-      {/* Main content */}
-      <div className="flex-grow-1">
+      {/* Main Area */}
+      <div className="main-area flex-grow-1 d-flex flex-column">
         <div className="top-navbar">
           <span><strong>Invoice</strong> | Manage Group Section</span>
-          <span>Hi User <a href="#" className="text-danger">Logout</a></span>
+          <span>Hi User <span onClick={() => navigate('/login')} className="text-danger">Logout</span></span>
         </div>
 
         <div className="dashboard-content">
@@ -49,49 +58,51 @@ const GroupDashboard = () => {
             Total Groups: {groups.length}
           </div>
 
-          <button className="btn-add" onClick={() => navigate('/edit')}>
+          <button className="btn-add mb-3" onClick={() => navigate('/edit')}>
             Add Group
           </button>
 
-          <table className="table table-bordered">
-            <thead className="table-light">
-              <tr>
-                <th>Sr.No</th>
-                <th>Group Name</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {groups.map((g, i) => (
-                <tr key={g.groupId}>
-                  <td>{i + 1}</td>
-                  <td>{g.groupName}</td>
-                  <td>
-                    <button
-                      className="btn btn-warning btn-sm"
-                      onClick={() => navigate(`/edit/${g.groupId}`)}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(g.groupId)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {groups.length === 0 && (
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead className="table-light">
                 <tr>
-                  <td colSpan="4" className="text-center">No groups available</td>
+                  <th>Sr.No</th>
+                  <th>Group Name</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {groups.map((g, i) => (
+                  <tr key={g.groupId}>
+                    <td>{i + 1}</td>
+                    <td>{g.groupName}</td>
+                    <td>
+                      <button
+                        className="btn btn-warning btn-sm"
+                        onClick={() => navigate(`/edit/${g.groupId}`)}
+                      >
+                        Edit
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDelete(g.groupId)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {groups.length === 0 && (
+                  <tr>
+                    <td colSpan="4" className="text-center">No groups available</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

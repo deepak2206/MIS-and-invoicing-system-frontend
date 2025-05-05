@@ -1,0 +1,15 @@
+/* Ensure body and html take full height and remove margin */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #e0eafc, #cfdef3); /* Match login bg */
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden; /* Prevent extra space/scroll */
+  }
+  
+  /* Optional: If using a wrapping div or root container */
+  #root, .auth-container {
+    height: 100%;
+  }
+  

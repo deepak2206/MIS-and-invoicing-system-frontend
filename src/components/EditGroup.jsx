@@ -1,25 +1,31 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/EditGroup.css'; // Optional external styling
+import TopNavbar from './TopNavbar';
 
 const EditGroup = () => {
   const [groupName, setGroupName] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { id } = useParams(); // <-- get ID from /edit/:id
+  const { id } = useParams();
   const BASE = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (id) {
-      // fetch group data by ID and populate
-      axios.get(`${BASE}/api/groups`, { withCredentials: true }).then((res) => {
-        const group = res.data.find((g) => g.groupId == id);
-        if (group) setGroupName(group.groupName);
-      });
+      axios
+        .get(`${BASE}/api/groups`, { withCredentials: true })
+        .then((res) => {
+          const group = res.data.find((g) => g.groupId.toString() === id);
+          if (group) setGroupName(group.groupName);
+          else navigate('/dashboard');
+        })
+        .catch(() => navigate('/dashboard'));
     }
   }, [id]);
 
-  const handleSave = async () => {
+  const handleSubmit = async () => {
     if (!groupName.trim()) {
       setError('Group name is required');
       return;
@@ -28,11 +34,9 @@ const EditGroup = () => {
     try {
       if (id) {
         await axios.put(`${BASE}/api/groups/${id}`, { groupName }, { withCredentials: true });
-
         alert('Group updated successfully!');
       } else {
         await axios.post(`${BASE}/api/groups`, { groupName }, { withCredentials: true });
-
         alert('Group added successfully!');
       }
       navigate('/dashboard');
@@ -42,12 +46,18 @@ const EditGroup = () => {
   };
 
   return (
+<>
+
+    <TopNavbar /> {/* Static Top Bar */}
     <div className="container mt-5">
-      <h3>{id ? 'Edit Group' : 'Add Group'}</h3>
-      <div className="card mb-4 shadow">
+      
+    </div>
+    <div className="container mt-5">
+      <h3 className="mb-4">{id ? 'Edit Group' : 'Add Group'}</h3>
+      <div className="card shadow">
         <div className="card-body">
           <div className="row g-3 align-items-center">
-            <div className="col-auto">
+            <div className="col-md-8">
               <input
                 type="text"
                 className="form-control"
@@ -56,8 +66,11 @@ const EditGroup = () => {
                 onChange={(e) => setGroupName(e.target.value)}
               />
             </div>
-            <div className="col-auto">
-              <button className="btn btn-success" onClick={handleSave}>
+            <div className="col-md-4">
+              <button
+                className={`btn ${id ? 'btn-primary' : 'btn-success'} w-100`}
+                onClick={handleSubmit}
+              >
                 {id ? 'Update' : 'Add'} Group
               </button>
             </div>
@@ -70,6 +83,7 @@ const EditGroup = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

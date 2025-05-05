@@ -1,0 +1,24 @@
+.top-navbar-static {
+    background-color: #ffffff;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 17px;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .top-navbar-static .title {
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  .top-navbar-static .logout {
+    cursor: pointer;
+    color: #dc3545;
+  }
+  

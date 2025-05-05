@@ -70,6 +70,10 @@ function Register() {
           <button type="submit" className="btn btn-success auth-btn">
             Register
           </button>
+          <p>Already have an account?</p>
+          <button className="btn btn-outline-secondary" onClick={() => navigate('/login')}>
+            Login
+          </button>
         </form>
       </div>
     </div>
