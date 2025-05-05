@@ -8,6 +8,7 @@ import Register from './components/Register';
 import EditGroup from './components/EditGroup';
 
 import GroupDashboard from './components/GroupDashboard';
+import EditDetails from './components/EditDetails';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<GroupDashboard />} />
         <Route path="*" element={<Login />} />
         <Route path="/edit" element={<EditGroup />} />
+        <Route path="/edit/:id" element={<EditDetails />} />
       </Routes>
     </BrowserRouter>
   );
