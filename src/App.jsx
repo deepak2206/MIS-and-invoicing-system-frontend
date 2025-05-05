@@ -6,6 +6,7 @@ import GroupDashboard from './components/GroupDashboard';
 import EditGroup from './components/EditGroup';
 import EditDetails from './components/EditDetails';
 import PrivateRoute from './components/PrivateRoute'; // If using protected routes
+import ChainDashboard from './components/ChainDashboard';
 
 function App() {
   return (
