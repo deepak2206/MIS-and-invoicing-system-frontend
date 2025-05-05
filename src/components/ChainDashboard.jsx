@@ -9,6 +9,15 @@ const ChainDashboard = () => {
   const navigate = useNavigate();
   const BASE = import.meta.env.VITE_API_BASE_URL;
 
+  // ✅ Check if user is logged in
+  useEffect(() => {
+    axios.get(`${BASE}/api/auth/current-user`, { withCredentials: true })
+      .then((res) => {
+        if (!res.data?.userId) navigate('/login');
+      })
+      .catch(() => navigate('/login'));
+  }, []);
+
   const fetchChains = async () => {
     try {
       const res = await axios.get(`${BASE}/api/chains`, { withCredentials: true });
@@ -54,18 +63,15 @@ const ChainDashboard = () => {
 
   return (
     <div className="layout-container">
-      {/* Sidebar */}
       <div className="sidebar">
-        <span className="active">Dashboard</span>
         <span onClick={() => navigate('/dashboard')}>Manage Groups</span>
-        <span onClick={() => navigate('/manage-chain')}>Manage Chain</span>
+        <span className="active" onClick={() => navigate('/manage-chain')}>Manage Chain</span>
         <span>Manage Brands</span>
         <span>Manage SubZones</span>
         <span>Manage Estimate</span>
         <span>Manage Invoices</span>
       </div>
 
-      {/* Main Content */}
       <div className="main-area flex-grow-1 d-flex flex-column">
         <div className="top-navbar">
           <span><strong>Invoice</strong> | Manage Chain Section</span>
