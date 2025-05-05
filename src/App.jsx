@@ -6,7 +6,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 
 import EditGroup from './components/EditGroup';
-import Dashboard from './components/Dashboard';
+
+import GroupDashboard from './components/GroupDashboard';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<GroupDashboard />} />
         <Route path="*" element={<Login />} />
         <Route path="/edit" element={<EditGroup />} />
       </Routes>
