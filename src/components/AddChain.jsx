@@ -12,6 +12,18 @@ function AddChain() {
 
   const BASE = import.meta.env.VITE_API_BASE_URL;
 
+  // ✅ Session check
+  useEffect(() => {
+    axios.get(`${BASE}/api/auth/current-user`, { withCredentials: true })
+      .then(() => {
+        // Authenticated user
+      })
+      .catch(() => {
+        navigate('/login'); // Redirect to login if not logged in
+      });
+  }, []);
+
+  // ✅ Load group options
   useEffect(() => {
     axios.get(`${BASE}/api/groups`, { withCredentials: true })
       .then((res) => setGroups(res.data))
