@@ -12,7 +12,7 @@ const EditGroup = () => {
   useEffect(() => {
     if (id) {
       // fetch group data by ID and populate
-      axios.get(`${BASE}/groups`, { withCredentials: true }).then((res) => {
+      axios.get(`${BASE}/api/groups`, { withCredentials: true }).then((res) => {
         const group = res.data.find((g) => g.groupId == id);
         if (group) setGroupName(group.groupName);
       });
@@ -27,10 +27,12 @@ const EditGroup = () => {
 
     try {
       if (id) {
-        await axios.put(`${BASE}/groups/${id}`, { groupName }, { withCredentials: true });
+        await axios.put(`${BASE}/api/groups/${id}`, { groupName }, { withCredentials: true });
+
         alert('Group updated successfully!');
       } else {
-        await axios.post(`${BASE}/groups`, { groupName }, { withCredentials: true });
+        await axios.post(`${BASE}/api/groups`, { groupName }, { withCredentials: true });
+
         alert('Group added successfully!');
       }
       navigate('/dashboard');

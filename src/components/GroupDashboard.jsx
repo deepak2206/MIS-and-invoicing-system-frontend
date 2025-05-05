@@ -9,7 +9,7 @@ const GroupDashboard = () => {
   const BASE = import.meta.env.VITE_API_BASE_URL;
 
   const fetchGroups = async () => {
-    const res = await axios.get(`${BASE}/groups`, { withCredentials: true });
+    const res = await axios.get(`${BASE}/api/groups`, { withCredentials: true });
     setGroups(res.data);
   };
 
@@ -19,7 +19,7 @@ const GroupDashboard = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this group?")) {
-      await axios.delete(`${BASE}/groups/${id}`, { withCredentials: true });
+      await axios.delete(`${BASE}/api/groups/${id}`, { withCredentials: true });
       fetchGroups();
     }
   };
