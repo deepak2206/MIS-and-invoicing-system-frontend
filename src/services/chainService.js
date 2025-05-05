@@ -8,3 +8,5 @@ export const getChainsByGroup = (groupName) => axios.get(`${BASE}/api/chains/fil
   withCredentials: true
 });
 export const deleteChain = (id) => axios.delete(`${BASE}/api/chains/${id}`, { withCredentials: true });
+export const addChain = (data) => 
+    axios.post(`${BASE}/api/chains`, data, { withCredentials: true });
