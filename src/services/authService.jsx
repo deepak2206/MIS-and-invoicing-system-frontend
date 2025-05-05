@@ -1,15 +1,11 @@
 import axios from 'axios';
 
-const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true, // important for session
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL
 });
+export const register = (data) => api.post('/api/auth/register', data);
+export const login = (data) => api.post('/api/auth/login', data);
+export const logout = () => api.post('/api/auth/logout');
 
-
-export const register = (userData) => API.post('/auth/register', userData);
-
-export const login = (userData) => API.post('/auth/login', userData);
-
-export const logout = () => API.post('/auth/logout');
-
-export const getSessionUser = () => API.get('/auth/session-user');
+// ✅ Add this to fix the import error
+export const getSessionUser = () => api.get('/api/auth/current-user');

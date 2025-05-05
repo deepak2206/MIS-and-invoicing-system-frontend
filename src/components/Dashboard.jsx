@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
+import React from 'react';
+
 import { getSessionUser, logout } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 
-const Dashboard = () => {
+function Dashboard() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     getSessionUser()
-      .then((res) => setUser(res.data))
+      .then(res => setUser(res.data))
       .catch(() => navigate('/login'));
   }, []);
 
@@ -19,11 +21,11 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h2>Welcome, {user?.fullName}</h2>
-      <p>Role: {user?.role}</p>
+      <h2>Dashboard</h2>
+      {user && <p>Welcome, {user.fullName} ({user.role})</p>}
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
-};
+}
 
 export default Dashboard;

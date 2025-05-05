@@ -1,24 +1,31 @@
 import { useState } from 'react';
+import React from 'react';
+
 import { register } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+function Register() {
   const [user, setUser] = useState({
     fullName: '',
     email: '',
     passwordHash: '',
-    role: 'SALESPERSON',
+    role: 'Salesperson', // default role
   });
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await register(user);
-      alert('Registration successful');
+      alert('Registration successful. Please login.');
       navigate('/login');
-    } catch (err) {
-      alert('Registration failed: ' + err.response.data.message);
+    } catch (error) {
+      if (error.response?.status === 409) {
+        alert('Email already exists.');
+      } else {
+        alert('Registration failed.');
+      }
     }
   };
 
@@ -49,13 +56,14 @@ const Register = () => {
       <select
         value={user.role}
         onChange={(e) => setUser({ ...user, role: e.target.value })}
+        required
       >
-        <option value="SALESPERSON">Salesperson</option>
-        <option value="ADMIN">Admin</option>
+        <option value="Admin">Admin</option>
+        <option value="Salesperson">Salesperson</option>
       </select>
       <button type="submit">Register</button>
     </form>
   );
-};
+}
 
 export default Register;
