@@ -40,7 +40,7 @@ const GroupDashboard = () => {
         <Link to="/dashboard">Manage Groups</Link>
         <Link to="/manage-chain">Manage Chain</Link>
 
-        <Link to="#">Manage Brands</Link>
+        <Link to="/manage-brand">Manage Brands</Link>
         <Link to="#">Manage SubZones</Link>
         <Link to="#">Manage Estimate</Link>
         <Link to="#">Manage Invoices</Link>
