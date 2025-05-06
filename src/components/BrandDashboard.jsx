@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-// 🔧 Enable credentials globally
-axios.defaults.withCredentials = true;
+import {
+  getBrands,
+  addBrand,
+  updateBrand,
+  deleteBrand,
+  getChains,
+} from "../services/brandService"; // Make sure path is correct
 
 const BrandDashboard = () => {
   const [brands, setBrands] = useState([]);
@@ -11,29 +14,21 @@ const BrandDashboard = () => {
   const [selectedChain, setSelectedChain] = useState("");
   const [editingId, setEditingId] = useState(null);
 
-  const BASE = import.meta.env.VITE_API_BASE_URL;
-
-  const fetchBrands = async () => {
+  const fetchData = async () => {
     try {
-      const res = await axios.get(`${BASE}/api/brands`, { withCredentials: true });
-      setBrands(res.data);
+      const [brandRes, chainRes] = await Promise.all([
+        getBrands(),
+        getChains(),
+      ]);
+      setBrands(brandRes.data);
+      setChains(chainRes.data);
     } catch (err) {
-      console.error("Error fetching brands", err);
-    }
-  };
-
-  const fetchChains = async () => {
-    try {
-      const res = await axios.get(`${BASE}/api/chains`, { withCredentials: true });
-      setChains(res.data);
-    } catch (err) {
-      console.error("Error fetching chains", err);
+      console.error("Error fetching data", err);
     }
   };
 
   useEffect(() => {
-    fetchBrands();
-    fetchChains();
+    fetchData();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -42,17 +37,21 @@ const BrandDashboard = () => {
 
     try {
       if (editingId) {
-        await axios.put(`${BASE}/api/brands/${editingId}`, data, { withCredentials: true });
+        await updateBrand(editingId, data);
       } else {
-        await axios.post(`${BASE}/api/brands`, data, { withCredentials: true });
+        await addBrand(data);
       }
-      setBrandName("");
-      setSelectedChain("");
-      setEditingId(null);
-      fetchBrands();
+      resetForm();
+      fetchData();
     } catch (err) {
       console.error("Error saving brand", err);
     }
+  };
+
+  const resetForm = () => {
+    setBrandName("");
+    setSelectedChain("");
+    setEditingId(null);
   };
 
   const handleEdit = (brand) => {
@@ -64,8 +63,8 @@ const BrandDashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Confirm deletion?")) {
       try {
-        await axios.delete(`${BASE}/api/brands/${id}`, { withCredentials: true });
-        fetchBrands();
+        await deleteBrand(id);
+        fetchData();
       } catch (err) {
         console.error("Error deleting brand", err);
       }
@@ -91,7 +90,7 @@ const BrandDashboard = () => {
           <option value="">Select Company</option>
           {chains.map((c) => (
             <option key={c.chainId} value={c.chainId}>
-              {c.chainName}
+              {c.companyName}
             </option>
           ))}
         </select>
@@ -114,7 +113,7 @@ const BrandDashboard = () => {
             <tr key={b.brandId}>
               <td>{index + 1}</td>
               <td>{b.chain.group.groupName}</td>
-              <td>{b.chain.chainName}</td>
+              <td>{b.chain.companyName}</td>
               <td>{b.brandName}</td>
               <td>
                 <button onClick={() => handleEdit(b)}>Edit</button>
