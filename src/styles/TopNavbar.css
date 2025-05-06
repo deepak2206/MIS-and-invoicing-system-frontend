@@ -1,34 +1,43 @@
-.top-navbar-static {
+.top-navbar-vertical {
+  width: 200px;
+  background-color: #f8f9fa;
+  height: 100vh;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ccc;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.topbar-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background-color: #f4f4f4;
-  padding: 10px 20px;
-  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
 }
 
-.left .title {
+.top-title {
+  font-weight: bold;
   cursor: pointer;
-  font-size: 18px;
 }
 
-.center-links {
+.top-logout {
+  color: red;
+  cursor: pointer;
+}
+
+.sidebar-links {
   display: flex;
-  gap: 15px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.center-links a {
+.sidebar-links a {
   text-decoration: none;
   color: #333;
-  font-weight: 500;
 }
 
-.center-links a:hover {
-  text-decoration: underline;
-}
-
-.right .logout {
-  cursor: pointer;
-  color: red;
-  font-weight: bold;
+.sidebar-links a:hover {
+  color: #007bff;
 }

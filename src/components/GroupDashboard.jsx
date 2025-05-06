@@ -70,7 +70,7 @@ const GroupDashboard = () => {
 
 
       {/* Main Area */}
-      <div className="main-area flex-grow-1 d-flex flex-column">
+      <div className="main-area flex-grow-1 d-flex flex-column" style={{ marginLeft: '200px', padding: '20px' }}>
         <div className="top-navbar">
           <span><strong>Invoice</strong> | Manage Group Section</span>
           <span>Hi User <span onClick={() => navigate('/login')} className="text-danger">Logout</span></span>
