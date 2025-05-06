@@ -1,15 +1,38 @@
-.nav-link {
+/* Make sidebar fixed and always visible */
+.top-navbar-vertical {
+  width: 200px;
+  background-color: #f8f9fa;
+  height: 100vh;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ccc;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1030; /* stay below top-navbar if needed */
+}
+
+.topbar-header {
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-links a {
+  text-decoration: none;
+  color: #333;
   padding: 8px 12px;
   border-radius: 4px;
-  color: #333;
 }
 
-.nav-link:hover {
+.sidebar-links a:hover {
   background-color: #e9ecef;
-  text-decoration: none;
-}
-
-.nav-link.active {
-  background-color: #dee2e6;
-  font-weight: bold;
+  color: #0d6efd;
 }
