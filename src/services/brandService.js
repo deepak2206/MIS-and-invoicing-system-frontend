@@ -27,8 +27,3 @@ export const deleteChain = (id) =>
 
 export const addChain = (data) =>
   axios.post(`${BASE}/chains`, data, { withCredentials: true });
-
-
-export const getBrandsByGroup = (groupId) =>
-    axios.get(`${BASE}/api/brands/group/${groupId}`, { withCredentials: true });
-  
