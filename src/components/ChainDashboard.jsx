@@ -4,6 +4,7 @@ import { getChains, getChainsByGroup, deleteChain } from '../services/chainServi
 import { getSessionUser } from '../services/authService';
 import axios from 'axios'; // Direct axios for group fetching
 import '../styles/DashboardLayout.css';
+import TopNavbar from './TopNavbar';
 
 const BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -42,6 +43,8 @@ const ChainDashboard = () => {
 
   return (
     <div className="layout-container">
+      <TopNavbar />
+
       <div className="sidebar">
         <span onClick={() => navigate('/dashboard')}>Dashboard</span>
         <span className="active">Manage Chain</span>

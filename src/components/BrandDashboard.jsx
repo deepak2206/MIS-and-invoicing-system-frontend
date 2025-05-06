@@ -6,6 +6,7 @@ import {
   deleteBrand,
   getChains,
 } from "../services/brandService"; // Make sure path is correct
+import TopNavbar from "./TopNavbar";
 
 const BrandDashboard = () => {
   const [brands, setBrands] = useState([]);
@@ -73,6 +74,8 @@ const BrandDashboard = () => {
 
   return (
     <div className="container">
+      <TopNavbar />
+
       <h3>Manage Brand Section</h3>
       <form onSubmit={handleSubmit}>
         <input

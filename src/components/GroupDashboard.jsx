@@ -4,6 +4,7 @@ import { getChains } from '../services/chainService';
 import { getBrands } from '../services/brandService';
 import axios from 'axios';
 import '../styles/DashboardLayout.css';
+import TopNavbar from './TopNavbar';
 
 const GroupDashboard = () => {
   const [groups, setGroups] = useState([]);
@@ -56,7 +57,7 @@ const GroupDashboard = () => {
   return (
     <div className="layout-container">
       {/* Sidebar */}
-      <div className="sidebar">
+      {/* <div className="sidebar">
         <Link to="/dashboard" className="active">Dashboard</Link>
         <Link to="/dashboard">Manage Groups</Link>
         <Link to="/manage-chain">Manage Chain</Link>
@@ -64,7 +65,9 @@ const GroupDashboard = () => {
         <Link to="#">Manage SubZones</Link>
         <Link to="#">Manage Estimate</Link>
         <Link to="#">Manage Invoices</Link>
-      </div>
+      </div> */}
+      <TopNavbar />
+
 
       {/* Main Area */}
       <div className="main-area flex-grow-1 d-flex flex-column">
