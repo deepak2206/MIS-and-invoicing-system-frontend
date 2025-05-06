@@ -30,5 +30,5 @@ export const addChain = (data) =>
 
 
 export const getBrandsByGroup = (groupId) =>
-    axios.get(`${BASE}/brands/group/${groupId}`, { withCredentials: true });
+    axios.get(`${BASE}/api/brands/group/${groupId}`, { withCredentials: true });
   
