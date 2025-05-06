@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { getBrandsByGroup } from '../services/brandService';
 import '../styles/DashboardLayout.css';
 
 const GroupDashboard = () => {
@@ -11,23 +10,8 @@ const GroupDashboard = () => {
 
   const fetchGroups = async () => {
     try {
-      const res = await axios.get(`${BASE}/groups`, { withCredentials: true });
-      const groupList = res.data;
-
-      // Fetch brands per group and attach to each group
-      const updatedGroups = await Promise.all(
-        groupList.map(async (g) => {
-          try {
-            const brandRes = await getBrandsByGroup(g.groupId);
-            return { ...g, brands: brandRes.data };
-          } catch (err) {
-            console.error(`Failed to fetch brands for group ${g.groupId}`, err);
-            return { ...g, brands: [] };
-          }
-        })
-      );
-
-      setGroups(updatedGroups);
+      const res = await axios.get(`${BASE}/api/groups`, { withCredentials: true });
+      setGroups(res.data);
     } catch (err) {
       console.error("Failed to fetch groups", err);
     }
@@ -40,7 +24,7 @@ const GroupDashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this group?")) {
       try {
-        await axios.delete(`${BASE}/groups/${id}`, { withCredentials: true });
+        await axios.delete(`${BASE}/api/groups/${id}`, { withCredentials: true });
         fetchGroups();
       } catch (err) {
         alert("Failed to delete group.");
@@ -55,6 +39,7 @@ const GroupDashboard = () => {
         <Link to="/dashboard" className="active">Dashboard</Link>
         <Link to="/dashboard">Manage Groups</Link>
         <Link to="/manage-chain">Manage Chain</Link>
+
         <Link to="/manage-brand">Manage Brands</Link>
         <Link to="#">Manage SubZones</Link>
         <Link to="#">Manage Estimate</Link>
@@ -69,7 +54,9 @@ const GroupDashboard = () => {
         </div>
 
         <div className="dashboard-content">
-          <div className="card-red">Total Groups: {groups.length}</div>
+          <div className="card-red">
+            Total Groups: {groups.length}
+          </div>
 
           <button className="btn-add mb-3" onClick={() => navigate('/edit')}>
             Add Group
@@ -89,16 +76,7 @@ const GroupDashboard = () => {
                 {groups.map((g, i) => (
                   <tr key={g.groupId}>
                     <td>{i + 1}</td>
-                    <td>
-                      {g.groupName}
-                      {g.brands?.length > 0 && (
-                        <ul className="mt-1">
-                          {g.brands.map((b) => (
-                            <li key={b.brandId}>{b.brandName}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </td>
+                    <td>{g.groupName}</td>
                     <td>
                       <button
                         className="btn btn-warning btn-sm"
