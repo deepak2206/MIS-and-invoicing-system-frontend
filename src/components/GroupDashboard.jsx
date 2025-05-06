@@ -50,8 +50,32 @@ const GroupDashboard = () => {
         </div>
 
         <div className="dashboard-content p-4">
-          <div className="card bg-danger text-white mb-4">
-            <div className="card-body">Total Groups: {groups.length}</div>
+          {/* Summary Cards */}
+          <div className="row mb-4">
+            <div className="col-md-3">
+              <div className="card bg-danger text-white shadow text-center">
+                <div className="card-body">
+                  <h6>Total Groups</h6>
+                  <h4>{groups.length}</h4>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="card bg-warning text-white shadow text-center">
+                <div className="card-body">
+                  <h6>Total Chains</h6>
+                  <h4>{chains.length}</h4>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="card bg-success text-white shadow text-center">
+                <div className="card-body">
+                  <h6>Total Brands</h6>
+                  <h4>{brands.length}</h4>
+                </div>
+              </div>
+            </div>
           </div>
 
           <button className="btn btn-primary mb-3" onClick={() => navigate('/edit')}>
@@ -60,7 +84,7 @@ const GroupDashboard = () => {
 
           <div className="table-responsive">
             <table className="table table-bordered align-middle">
-              <thead className="table-light">
+              <thead className="table-dark">
                 <tr>
                   <th>Sr.No</th>
                   <th>Group</th>
@@ -85,12 +109,12 @@ const GroupDashboard = () => {
                         {groupChains.length > 0 ? (
                           <ul>
                             {groupChains.map((c) => (
-                              <li key={c.chainId}>
-                                {c.companyName} ({c.gstnNo})
-                              </li>
+                              <li key={c.chainId}>{c.companyName} ({c.gstnNo})</li>
                             ))}
                           </ul>
-                        ) : <span className="text-muted">No Companies</span>}
+                        ) : (
+                          <span className="text-muted">No Companies</span>
+                        )}
                       </td>
                       <td>
                         {groupBrands.length > 0 ? (
@@ -99,7 +123,9 @@ const GroupDashboard = () => {
                               <li key={b.brandId}>{b.brandName}</li>
                             ))}
                           </ul>
-                        ) : <span className="text-muted">No Brands</span>}
+                        ) : (
+                          <span className="text-muted">No Brands</span>
+                        )}
                       </td>
                       <td>
                         <button className="btn btn-warning btn-sm" onClick={() => navigate(`/edit/${g.groupId}`)}>Edit</button>
@@ -110,6 +136,11 @@ const GroupDashboard = () => {
                     </tr>
                   );
                 })}
+                {groups.length === 0 && (
+                  <tr>
+                    <td colSpan="6" className="text-center">No groups available</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
