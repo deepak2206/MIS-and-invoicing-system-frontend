@@ -1,82 +1,97 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../styles/DashboardLayout.css';
+import { useNavigate } from 'react-router-dom';
 
 const GroupDashboard = () => {
   const [groups, setGroups] = useState([]);
+  const [chains, setChains] = useState([]);
   const navigate = useNavigate();
+
   const BASE = import.meta.env.VITE_API_BASE_URL;
 
   const fetchGroups = async () => {
-    try {
-      const res = await axios.get(`${BASE}/api/groups`, { withCredentials: true });
-      setGroups(res.data);
-    } catch (err) {
-      console.error("Failed to fetch groups", err);
-    }
+    const res = await axios.get(`${BASE}/groups`);
+    setGroups(res.data);
+  };
+
+  const fetchChains = async () => {
+    const res = await axios.get(`${BASE}/chains`);
+    setChains(res.data);
   };
 
   useEffect(() => {
     fetchGroups();
+    fetchChains();
   }, []);
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this group?")) {
-      try {
-        await axios.delete(`${BASE}/api/groups/${id}`, { withCredentials: true });
-        fetchGroups();
-      } catch (err) {
-        alert("Failed to delete group.");
-      }
+      await axios.delete(`${BASE}/groups/${id}`);
+      fetchGroups();
     }
   };
 
-  return (
-    <div className="layout-container">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <Link to="/dashboard" className="active">Dashboard</Link>
-        <Link to="/dashboard">Manage Groups</Link>
-        <Link to="/manage-chain">Manage Chain</Link>
+  const getChainsForGroup = (groupId) =>
+    chains.filter((chain) => chain.group.groupId === groupId);
 
-        <Link to="/manage-brand">Manage Brands</Link>
-        <Link to="#">Manage SubZones</Link>
-        <Link to="#">Manage Estimate</Link>
-        <Link to="#">Manage Invoices</Link>
+  return (
+    <div className="container mt-4">
+      <div className="row mb-4">
+        <div className="col-md-3">
+          <div className="card text-white bg-danger text-center shadow">
+            <div className="card-body">
+              <h5 className="card-title">Total Groups</h5>
+              <h3 className="card-text">{groups.length}</h3>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-3">
+          <div className="card text-white bg-warning text-center shadow">
+            <div className="card-body">
+              <h5 className="card-title">Total Chains</h5>
+              <h3 className="card-text">{chains.length}</h3>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Main Area */}
-      <div className="main-area flex-grow-1 d-flex flex-column">
-        <div className="top-navbar">
-          <span><strong>Invoice</strong> | Manage Group Section</span>
-          <span>Hi User <span onClick={() => navigate('/login')} className="text-danger">Logout</span></span>
-        </div>
+      <button className="btn btn-primary mb-3" onClick={() => navigate('/edit')}>
+        ➕ Add Group
+      </button>
 
-        <div className="dashboard-content">
-          <div className="card-red">
-            Total Groups: {groups.length}
-          </div>
-
-          <button className="btn-add mb-3" onClick={() => navigate('/edit')}>
-            Add Group
-          </button>
-
-          <div className="table-responsive">
-            <table className="table table-bordered">
-              <thead className="table-light">
-                <tr>
-                  <th>Sr.No</th>
-                  <th>Group Name</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {groups.map((g, i) => (
+      <div className="card shadow">
+        <div className="card-body">
+          <h5 className="card-title mb-3">Group List with Chains</h5>
+          <table className="table table-bordered">
+            <thead className="table-light">
+              <tr>
+                <th>Sr.No</th>
+                <th>Group Name</th>
+                <th>Company Names (with GSTN)</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {groups.map((g, i) => {
+                const chainsForGroup = getChainsForGroup(g.groupId);
+                return (
                   <tr key={g.groupId}>
                     <td>{i + 1}</td>
                     <td>{g.groupName}</td>
+                    <td>
+                      {chainsForGroup.length > 0 ? (
+                        <ul className="mb-0 ps-3">
+                          {chainsForGroup.map((c) => (
+                            <li key={c.chainId}>
+                              <strong>{c.companyName}</strong> ({c.gstnNo})
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span className="text-muted">No chains</span>
+                      )}
+                    </td>
                     <td>
                       <button
                         className="btn btn-warning btn-sm"
@@ -94,15 +109,17 @@ const GroupDashboard = () => {
                       </button>
                     </td>
                   </tr>
-                ))}
-                {groups.length === 0 && (
-                  <tr>
-                    <td colSpan="4" className="text-center">No groups available</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                );
+              })}
+              {groups.length === 0 && (
+                <tr>
+                  <td colSpan="5" className="text-center">
+                    No groups available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
