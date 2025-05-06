@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getChains, getChainsByGroup, deleteChain } from '../services/chainService';
-import { getSessionUser } from '../services/authService';
-import axios from 'axios'; // Direct axios for group fetching
-import '../styles/DashboardLayout.css';
-import TopNavbar from './TopNavbar';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getChains, getChainsByGroup, deleteChain } from "../services/chainService";
+import axios from "axios";
+import TopNavbar from "./TopNavbar";
 
 const BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -14,7 +12,6 @@ const ChainDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getSessionUser().catch(() => navigate('/login'));
     fetchChains();
     fetchGroups();
   }, []);
@@ -29,7 +26,7 @@ const ChainDashboard = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this chain?")) {
+    if (window.confirm("Are you sure you want to delete this company?")) {
       await deleteChain(id);
       fetchChains();
     }
@@ -42,49 +39,63 @@ const ChainDashboard = () => {
   };
 
   return (
-    <div className="layout-container">
+    <>
       <TopNavbar />
-      <div className="top-navbar">
-          <span><strong>Invoice</strong> | Manage Group Section</span>
-          <span>Hi User <span onClick={() => navigate('/login')} className="text-danger">Logout</span></span>
-        </div>
-      <div className="sidebar">
-        <span onClick={() => navigate('/dashboard')}>Dashboard</span>
-        <span className="active">Manage Chain</span>
-        <span onClick={() => navigate('/manage-groups')}>Manage Groups</span>
-      </div>
-
-      <div className="main-area">
-        <div className="top-navbar">
-          <span><strong>Invoice</strong> | Manage Chain Section</span>
-          <span>Hi User | <span className="text-danger" onClick={() => navigate('/login')}>Logout</span></span>
+      <div className="container-fluid" style={{ marginLeft: "220px" }}>
+        <div className="top-navbar bg-white px-4 py-3 border-bottom d-flex justify-content-between">
+          <strong>Invoice | Manage Chains</strong>
         </div>
 
-        <div className="dashboard-content">
-          <div className="d-flex justify-content-between mb-3">
-            <h4>Chains</h4>
-            <button className="btn btn-success" onClick={() => navigate('/add-chain')}>Add Company</button>
+        <div className="dashboard-content p-4">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h4>Company List</h4>
+            <button className="btn btn-success" onClick={() => navigate("/add-chain")}>
+              ➕ Add Company
+            </button>
           </div>
 
-          <table className="table table-bordered">
+          <table className="table table-bordered table-hover">
             <thead className="table-dark">
               <tr>
-                <th>#</th><th>Group</th><th>Company</th><th>GSTN</th><th>Edit</th><th>Delete</th>
+                <th>#</th>
+                <th>Group</th>
+                <th>Company</th>
+                <th>GSTN</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              {chains.map((chain, idx) => (
-                <tr key={chain.chainId}>
-                  <td>{idx + 1}</td>
-                  <td>{chain.group.groupName}</td>
-                  <td>{chain.companyName}</td>
-                  <td>{chain.gstnNo}</td>
-                  <td><button className="btn btn-warning btn-sm" onClick={() => navigate(`/edit-chain/${chain.chainId}`)}>Edit</button></td>
-                  <td><button className="btn btn-danger btn-sm" onClick={() => handleDelete(chain.chainId)}>Delete</button></td>
+              {chains.map((c, i) => (
+                <tr key={c.chainId}>
+                  <td>{i + 1}</td>
+                  <td>{c.group.groupName}</td>
+                  <td>{c.companyName}</td>
+                  <td>{c.gstnNo}</td>
+                  <td>
+                    <button
+                      className="btn btn-warning btn-sm"
+                      onClick={() => navigate(`/edit-chain/${c.chainId}`)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDelete(c.chainId)}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
               {chains.length === 0 && (
-                <tr><td colSpan="6" className="text-center">No chains available</td></tr>
+                <tr>
+                  <td colSpan="6" className="text-center">
+                    No chains available
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
@@ -92,15 +103,23 @@ const ChainDashboard = () => {
           <div className="mt-4">
             <h6>Filter by Group</h6>
             <div className="d-flex gap-2 flex-wrap">
-              <button className="btn btn-outline-primary btn-sm" onClick={fetchChains}>All</button>
-              {groups.map(group => (
-                <button key={group.groupId} className="btn btn-outline-secondary btn-sm" onClick={() => handleFilter(group.groupId)}>{group.groupName}</button>
+              <button className="btn btn-outline-primary btn-sm" onClick={fetchChains}>
+                All
+              </button>
+              {groups.map((group) => (
+                <button
+                  key={group.groupId}
+                  className="btn btn-outline-secondary btn-sm"
+                  onClick={() => handleFilter(group.groupId)}
+                >
+                  {group.groupName}
+                </button>
               ))}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getChains } from '../services/chainService';
 import { getBrands } from '../services/brandService';
 import axios from 'axios';
-import '../styles/DashboardLayout.css';
 import TopNavbar from './TopNavbar';
 
 const GroupDashboard = () => {
@@ -14,22 +13,14 @@ const GroupDashboard = () => {
   const BASE = import.meta.env.VITE_API_BASE_URL;
 
   const fetchGroups = async () => {
-    try {
-      const res = await axios.get(`${BASE}/api/groups`, { withCredentials: true });
-      setGroups(res.data);
-    } catch (err) {
-      console.error("Failed to fetch groups", err);
-    }
+    const res = await axios.get(`${BASE}/api/groups`, { withCredentials: true });
+    setGroups(res.data);
   };
 
   const fetchChainsAndBrands = async () => {
-    try {
-      const [chainsRes, brandsRes] = await Promise.all([getChains(), getBrands()]);
-      setChains(chainsRes.data);
-      setBrands(brandsRes.data);
-    } catch (err) {
-      console.error("Failed to fetch chains or brands", err);
-    }
+    const [chainRes, brandRes] = await Promise.all([getChains(), getBrands()]);
+    setChains(chainRes.data);
+    setBrands(brandRes.data);
   };
 
   useEffect(() => {
@@ -39,12 +30,8 @@ const GroupDashboard = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this group?")) {
-      try {
-        await axios.delete(`${BASE}/api/groups/${id}`, { withCredentials: true });
-        fetchGroups();
-      } catch (err) {
-        alert("Failed to delete group.");
-      }
+      await axios.delete(`${BASE}/api/groups/${id}`, { withCredentials: true });
+      fetchGroups();
     }
   };
 
@@ -55,42 +42,28 @@ const GroupDashboard = () => {
     brands.filter((b) => b.chain.chainId === chainId);
 
   return (
-    <div className="layout-container">
-      {/* Sidebar */}
-      {/* <div className="sidebar">
-        <Link to="/dashboard" className="active">Dashboard</Link>
-        <Link to="/dashboard">Manage Groups</Link>
-        <Link to="/manage-chain">Manage Chain</Link>
-        <Link to="/manage-brand">Manage Brands</Link>
-        <Link to="#">Manage SubZones</Link>
-        <Link to="#">Manage Estimate</Link>
-        <Link to="#">Manage Invoices</Link>
-      </div> */}
+    <>
       <TopNavbar />
-
-
-      {/* Main Area */}
-      <div className="main-area flex-grow-1 d-flex flex-column" style={{ marginLeft: '200px', padding: '20px' }}>
-        <div className="top-navbar">
-          <span><strong>Invoice</strong> | Manage Group Section</span>
-          <span>Hi User <span onClick={() => navigate('/login')} className="text-danger">Logout</span></span>
+      <div className="container-fluid" style={{ marginLeft: '220px' }}>
+        <div className="top-navbar bg-white px-4 py-3 border-bottom d-flex justify-content-between">
+          <strong>Invoice | Manage Groups</strong>
         </div>
 
-        <div className="dashboard-content">
-          <div className="card-red">
-            Total Groups: {groups.length}
+        <div className="dashboard-content p-4">
+          <div className="card bg-danger text-white mb-4">
+            <div className="card-body">Total Groups: {groups.length}</div>
           </div>
 
-          <button className="btn-add mb-3" onClick={() => navigate('/edit')}>
-            Add Group
+          <button className="btn btn-primary mb-3" onClick={() => navigate('/edit')}>
+            ➕ Add Group
           </button>
 
           <div className="table-responsive">
-            <table className="table table-bordered">
+            <table className="table table-bordered align-middle">
               <thead className="table-light">
                 <tr>
                   <th>Sr.No</th>
-                  <th>Group Name</th>
+                  <th>Group</th>
                   <th>Companies</th>
                   <th>Brands</th>
                   <th>Edit</th>
@@ -99,9 +72,9 @@ const GroupDashboard = () => {
               </thead>
               <tbody>
                 {groups.map((g, i) => {
-                  const chainsForGroup = getChainsForGroup(g.groupId);
-                  const brandsForGroup = brands.filter(b => 
-                    chainsForGroup.some(c => c.chainId === b.chain.chainId)
+                  const groupChains = getChainsForGroup(g.groupId);
+                  const groupBrands = brands.filter(b =>
+                    groupChains.some(c => c.chainId === b.chain.chainId)
                   );
 
                   return (
@@ -109,57 +82,40 @@ const GroupDashboard = () => {
                       <td>{i + 1}</td>
                       <td>{g.groupName}</td>
                       <td>
-                        {chainsForGroup.length > 0 ? (
-                          <ul className="mb-0 ps-3">
-                            {chainsForGroup.map((c) => (
-                              <li key={c.chainId}><strong>{c.companyName}</strong> ({c.gstnNo})</li>
+                        {groupChains.length > 0 ? (
+                          <ul>
+                            {groupChains.map((c) => (
+                              <li key={c.chainId}>
+                                {c.companyName} ({c.gstnNo})
+                              </li>
                             ))}
                           </ul>
-                        ) : (
-                          <span className="text-muted">No companies</span>
-                        )}
+                        ) : <span className="text-muted">No Companies</span>}
                       </td>
                       <td>
-                        {brandsForGroup.length > 0 ? (
-                          <ul className="mb-0 ps-3">
-                            {brandsForGroup.map((b) => (
+                        {groupBrands.length > 0 ? (
+                          <ul>
+                            {groupBrands.map((b) => (
                               <li key={b.brandId}>{b.brandName}</li>
                             ))}
                           </ul>
-                        ) : (
-                          <span className="text-muted">No brands</span>
-                        )}
+                        ) : <span className="text-muted">No Brands</span>}
                       </td>
                       <td>
-                        <button
-                          className="btn btn-warning btn-sm"
-                          onClick={() => navigate(`/edit/${g.groupId}`)}
-                        >
-                          Edit
-                        </button>
+                        <button className="btn btn-warning btn-sm" onClick={() => navigate(`/edit/${g.groupId}`)}>Edit</button>
                       </td>
                       <td>
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={() => handleDelete(g.groupId)}
-                        >
-                          Delete
-                        </button>
+                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(g.groupId)}>Delete</button>
                       </td>
                     </tr>
                   );
                 })}
-                {groups.length === 0 && (
-                  <tr>
-                    <td colSpan="6" className="text-center">No groups available</td>
-                  </tr>
-                )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
