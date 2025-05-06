@@ -8,6 +8,7 @@ import EditDetails from './components/EditDetails';
 import PrivateRoute from './components/PrivateRoute'; // If using protected routes
 import ChainDashboard from './components/ChainDashboard';
 import AddChain from './components/AddChain';
+import EditChain from './components/EditChain';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="*" element={<Login />} />
         <Route path="/manage-chain" element={<ChainDashboard />} /> {/* ✅ Add this */}
         <Route path="/add-chain" element={<AddChain />} />
+        <Route path="/edit-chain/:id" element={<EditChain />} />
       </Routes>
     </BrowserRouter>
   );
