@@ -7,15 +7,7 @@ const TopNavbar = () => {
 
   return (
     <div className="top-navbar-vertical">
-      {/* Top Row: Dashboard | Logout */}
-      <div className="topbar-header">
-        <span className="top-title" onClick={() => navigate('/dashboard')}>
-          Dashboard
-        </span>
-        <span className="top-logout" onClick={() => navigate('/login')}>
-          Logout
-        </span>
-      </div>
+      
 
       {/* Vertical Nav Links */}
       <div className="sidebar-links">

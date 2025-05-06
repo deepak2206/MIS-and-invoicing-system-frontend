@@ -75,6 +75,10 @@ const BrandDashboard = () => {
   return (
     <div className="container">
       <TopNavbar />
+      <div className="top-navbar">
+          <span><strong>Invoice</strong> | Manage Group Section</span>
+          <span>Hi User <span onClick={() => navigate('/login')} className="text-danger">Logout</span></span>
+        </div>
 
       <h3>Manage Brand Section</h3>
       <form onSubmit={handleSubmit}>

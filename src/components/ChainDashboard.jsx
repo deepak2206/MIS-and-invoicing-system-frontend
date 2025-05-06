@@ -44,7 +44,10 @@ const ChainDashboard = () => {
   return (
     <div className="layout-container">
       <TopNavbar />
-
+      <div className="top-navbar">
+          <span><strong>Invoice</strong> | Manage Group Section</span>
+          <span>Hi User <span onClick={() => navigate('/login')} className="text-danger">Logout</span></span>
+        </div>
       <div className="sidebar">
         <span onClick={() => navigate('/dashboard')}>Dashboard</span>
         <span className="active">Manage Chain</span>
