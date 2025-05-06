@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// 🔧 Enable credentials globally
+axios.defaults.withCredentials = true;
+
 const BrandDashboard = () => {
   const [brands, setBrands] = useState([]);
   const [chains, setChains] = useState([]);
@@ -11,13 +14,21 @@ const BrandDashboard = () => {
   const BASE = import.meta.env.VITE_API_BASE_URL;
 
   const fetchBrands = async () => {
-    const res = await axios.get(`${BASE}/brands`);
-    setBrands(res.data);
+    try {
+      const res = await axios.get(`${BASE}/brands`, { withCredentials: true });
+      setBrands(res.data);
+    } catch (err) {
+      console.error("Error fetching brands", err);
+    }
   };
 
   const fetchChains = async () => {
-    const res = await axios.get(`${BASE}/chains`);
-    setChains(res.data);
+    try {
+      const res = await axios.get(`${BASE}/chains`, { withCredentials: true });
+      setChains(res.data);
+    } catch (err) {
+      console.error("Error fetching chains", err);
+    }
   };
 
   useEffect(() => {
@@ -29,15 +40,19 @@ const BrandDashboard = () => {
     e.preventDefault();
     const data = { brandName, chainId: selectedChain };
 
-    if (editingId) {
-      await axios.put(`${BASE}/brands/${editingId}`, data);
-    } else {
-      await axios.post(`${BASE}/brands`, data);
+    try {
+      if (editingId) {
+        await axios.put(`${BASE}/brands/${editingId}`, data, { withCredentials: true });
+      } else {
+        await axios.post(`${BASE}/brands`, data, { withCredentials: true });
+      }
+      setBrandName("");
+      setSelectedChain("");
+      setEditingId(null);
+      fetchBrands();
+    } catch (err) {
+      console.error("Error saving brand", err);
     }
-    setBrandName("");
-    setSelectedChain("");
-    setEditingId(null);
-    fetchBrands();
   };
 
   const handleEdit = (brand) => {
@@ -48,8 +63,12 @@ const BrandDashboard = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Confirm deletion?")) {
-      await axios.delete(`${BASE}/brands/${id}`);
-      fetchBrands();
+      try {
+        await axios.delete(`${BASE}/brands/${id}`, { withCredentials: true });
+        fetchBrands();
+      } catch (err) {
+        console.error("Error deleting brand", err);
+      }
     }
   };
 
