@@ -15,7 +15,7 @@ const BrandDashboard = () => {
 
   const fetchBrands = async () => {
     try {
-      const res = await axios.get(`${BASE}/brands`, { withCredentials: true });
+      const res = await axios.get(`${BASE}/api/brands`, { withCredentials: true });
       setBrands(res.data);
     } catch (err) {
       console.error("Error fetching brands", err);
@@ -24,7 +24,7 @@ const BrandDashboard = () => {
 
   const fetchChains = async () => {
     try {
-      const res = await axios.get(`${BASE}/chains`, { withCredentials: true });
+      const res = await axios.get(`${BASE}/api/chains`, { withCredentials: true });
       setChains(res.data);
     } catch (err) {
       console.error("Error fetching chains", err);
@@ -42,9 +42,9 @@ const BrandDashboard = () => {
 
     try {
       if (editingId) {
-        await axios.put(`${BASE}/brands/${editingId}`, data, { withCredentials: true });
+        await axios.put(`${BASE}/api/brands/${editingId}`, data, { withCredentials: true });
       } else {
-        await axios.post(`${BASE}/brands`, data, { withCredentials: true });
+        await axios.post(`${BASE}/api/brands`, data, { withCredentials: true });
       }
       setBrandName("");
       setSelectedChain("");
@@ -64,7 +64,7 @@ const BrandDashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Confirm deletion?")) {
       try {
-        await axios.delete(`${BASE}/brands/${id}`, { withCredentials: true });
+        await axios.delete(`${BASE}/api/brands/${id}`, { withCredentials: true });
         fetchBrands();
       } catch (err) {
         console.error("Error deleting brand", err);
