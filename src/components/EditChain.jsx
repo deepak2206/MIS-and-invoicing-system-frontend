@@ -21,17 +21,15 @@ const EditChain = () => {
   };
 
   const fetchChain = async () => {
-    const res = await axios.get(`${BASE}/api/chains`, { withCredentials: true });
-    const target = res.data.find((c) => c.chainId == id);
-    if (target) {
-      setChain({
-        companyName: target.companyName,
-        gstnNo: target.gstnNo,
-        groupId: target.group.groupId,
-      });
-    }
+    const res = await axios.get(`${BASE}/api/chains/${id}`, { withCredentials: true });
+    const target = res.data;
+    setChain({
+      companyName: target.companyName,
+      gstnNo: target.gstnNo,
+      groupId: target.group.groupId,
+    });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
