@@ -89,11 +89,10 @@ const BrandDashboard = () => {
         >
           <option value="">Select Company</option>
           {chains.map((c) => (
-  <option key={c.chainId} value={c.chainId}>
-    {c.companyName}  {/* ✅ Fix: correct property */}
-  </option>
-))}
-
+            <option key={c.chainId} value={c.chainId}>
+              {c.companyName}
+            </option>
+          ))}
         </select>
         <button type="submit">{editingId ? "Update" : "Add"} Brand</button>
       </form>
