@@ -68,6 +68,7 @@ const GroupDashboard = () => {
                 <tr>
                   <th>Sr.No</th>
                   <th>Group Name</th>
+                  <th>Company</th>
                   <th>Edit</th>
                   <th>Delete</th>
                 </tr>
