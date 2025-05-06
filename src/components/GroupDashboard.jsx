@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getChains } from '../services/chainService'; // ✅ adjust path
-import { getBrands } from '../services/brandService'; // ✅ adjust path
+import { getChains } from '../services/chainService';
+import { getBrands } from '../services/brandService';
 import axios from 'axios';
 import '../styles/DashboardLayout.css';
 
@@ -88,7 +88,8 @@ const GroupDashboard = () => {
                 <tr>
                   <th>Sr.No</th>
                   <th>Group Name</th>
-                  <th>Company & Brands</th>
+                  <th>Companies</th>
+                  <th>Brands</th>
                   <th>Edit</th>
                   <th>Delete</th>
                 </tr>
@@ -96,6 +97,10 @@ const GroupDashboard = () => {
               <tbody>
                 {groups.map((g, i) => {
                   const chainsForGroup = getChainsForGroup(g.groupId);
+                  const brandsForGroup = brands.filter(b => 
+                    chainsForGroup.some(c => c.chainId === b.chain.chainId)
+                  );
+
                   return (
                     <tr key={g.groupId}>
                       <td>{i + 1}</td>
@@ -104,22 +109,22 @@ const GroupDashboard = () => {
                         {chainsForGroup.length > 0 ? (
                           <ul className="mb-0 ps-3">
                             {chainsForGroup.map((c) => (
-                              <li key={c.chainId}>
-                                <strong>{c.companyName}</strong> ({c.gstnNo})
-                                <ul className="ps-3">
-                                  {getBrandsForChain(c.chainId).length > 0 ? (
-                                    getBrandsForChain(c.chainId).map((b) => (
-                                      <li key={b.brandId}>{b.brandName}</li>
-                                    ))
-                                  ) : (
-                                    <li className="text-muted">No brands</li>
-                                  )}
-                                </ul>
-                              </li>
+                              <li key={c.chainId}><strong>{c.companyName}</strong> ({c.gstnNo})</li>
                             ))}
                           </ul>
                         ) : (
-                          <span className="text-muted">No chains</span>
+                          <span className="text-muted">No companies</span>
+                        )}
+                      </td>
+                      <td>
+                        {brandsForGroup.length > 0 ? (
+                          <ul className="mb-0 ps-3">
+                            {brandsForGroup.map((b) => (
+                              <li key={b.brandId}>{b.brandName}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <span className="text-muted">No brands</span>
                         )}
                       </td>
                       <td>
@@ -143,7 +148,7 @@ const GroupDashboard = () => {
                 })}
                 {groups.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="text-center">No groups available</td>
+                    <td colSpan="6" className="text-center">No groups available</td>
                   </tr>
                 )}
               </tbody>
