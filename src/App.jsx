@@ -11,6 +11,7 @@ import AddChain from './components/AddChain';
 import EditChain from './components/EditChain';
 import BrandDashboard from './components/BrandDashboard';
 import ZoneDashboard from './components/ZoneDashboard';
+import EditZone from './components/EditZone';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
         <Route path="/edit-chain/:id" element={<EditChain />} />
         <Route path="/manage-brand" element={<BrandDashboard />} /> {/* ✅ Add this */}
         <Route path="/manage-zone" element={<ZoneDashboard />}/>
+        <Route path="/add-zone" element={<EditZone />}/>
       </Routes>
     </BrowserRouter>
   );
