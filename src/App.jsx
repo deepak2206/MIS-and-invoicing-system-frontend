@@ -12,6 +12,11 @@ import EditChain from './components/EditChain';
 import BrandDashboard from './components/BrandDashboard';
 import ZoneDashboard from './components/ZoneDashboard';
 import EditZone from './components/EditZone';
+import EstimateDashboard from './components/EstimateDashboard';
+import EditEstimate from './components/EditEstimate';
+import InvoiceDashboard from './components/ManageInvoice';
+import ManageInvoice from './components/ManageInvoice';
+import EditInvoice from './components/EditInvoice';
 
 function App() {
   return (
@@ -49,8 +54,19 @@ function App() {
         <Route path="/edit-chain/:id" element={<EditChain />} />
         <Route path="/manage-brand" element={<BrandDashboard />} /> {/* ✅ Add this */}
         <Route path="/manage-zone" element={<ZoneDashboard />}/>
+        <Route path="/manage-estimate" element={<EstimateDashboard />}/>
         <Route path="/add-zone" element={<EditZone />}/>
         <Route path="/edit-zone/:id" element={<EditZone />} />
+        <Route path="/edit-estimate/:id" element={<EditEstimate />} />
+        
+        <Route path="/add-estimate" element={<EditEstimate />}/>
+
+
+        <Route path="/manage-invoice" element={<ManageInvoice />}/>
+        <Route path="/add-zone" element={<EditZone />}/>
+        <Route path="/edit-invoice/:id" element={<EditInvoice />} />
+<Route path="/update-invoice/:id" element={<EditInvoice />} />
+
 
       </Routes>
     </BrowserRouter>

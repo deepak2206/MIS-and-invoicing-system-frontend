@@ -5,6 +5,7 @@ import TopNavbar from './TopNavbar';
 import { getZones } from '../services/zoneService';
 import { getBrands } from '../services/brandService';
 import { getChains } from '../services/chainService';
+import { getEstimates } from '../services/estimateService';
 import '../styles/DashboardLayout.css';
 
 const GroupDashboard = () => {
@@ -12,6 +13,7 @@ const GroupDashboard = () => {
   const [brands, setBrands] = useState([]);
   const [chains, setChains] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [estimates, setEstimates] = useState([]);
   const [filteredZones, setFilteredZones] = useState([]);
 
   const navigate = useNavigate();
@@ -22,16 +24,18 @@ const GroupDashboard = () => {
   }, []);
 
   const fetchData = async () => {
-    const [zRes, bRes, cRes, gRes] = await Promise.all([
+    const [zRes, bRes, cRes, gRes, estRes] = await Promise.all([
       getZones(),
       getBrands(),
       getChains(),
       axios.get(`${BASE}/api/groups`, { withCredentials: true }),
+      getEstimates()
     ]);
     setZones(zRes.data);
     setBrands(bRes.data);
     setChains(cRes.data);
     setGroups(gRes.data);
+    setEstimates(estRes.data);
     setFilteredZones(zRes.data);
   };
 
@@ -59,6 +63,8 @@ const GroupDashboard = () => {
     }
   };
 
+  
+
   return (
     <>
       <TopNavbar />
@@ -81,7 +87,6 @@ const GroupDashboard = () => {
         <div className="row g-3">
           <div className="col-lg-9">
             <div className="d-flex justify-content-between align-items-center mb-3">
-              
               <button className="btn btn-primary" onClick={() => navigate('/edit')}>➕ Add Group</button>
             </div>
 
@@ -90,29 +95,51 @@ const GroupDashboard = () => {
                 <thead className="table-dark">
                   <tr>
                     <th>#</th>
-                    <th>Zone</th>
-                    <th>Brand</th>
-                    <th>Company</th>
                     <th>Group</th>
+                    <th>Chain ID</th>
+                    <th>Brand</th>
+                    <th>Zone</th>
+                    <th>Service Details</th>
+                    <th>Total Units</th>
+                    <th>Price Per Unit</th>
+                    <th>Total</th>
                     <th>Edit</th>
                     <th>Delete</th>
+                    <th>Invoice</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredZones.map((z, i) => (
-                    <tr key={z.zoneId}>
+                  {estimates.map((e, i) => (
+                    <tr key={e.estimateId}>
                       <td>{i + 1}</td>
-                      <td>{z.zoneName}</td>
-                      <td>{z.brand?.brandName || 'No Brand'}</td>
-                      <td>{z.brand?.chain?.companyName || 'No Company'}</td>
-                      <td>{z.brand?.chain?.group?.groupName || 'No Group'}</td>
-                      <td><button className="btn btn-warning btn-sm" onClick={() => navigate(`/edit/${z.brand?.chain?.group?.groupId}`)}>Edit</button></td>
-                      <td><button className="btn btn-danger btn-sm" onClick={() => handleDelete(z.zoneId)}>Delete</button></td>
+                      <td>{e.chain.group.groupName}</td>
+                      <td>{e.chain.chainId}</td>
+                      <td>{e.brandName}</td>
+                      <td>{e.zoneName}</td>
+                      <td>{e.service}</td>
+                      <td>{e.qty}</td>
+                      <td>{e.costPerUnit}</td>
+                      <td>{e.totalCost}</td>
+                      <td>
+                        <button className="btn btn-warning btn-sm" onClick={() => navigate(`/edit-estimate/${e.estimateId}`)}>
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(e.estimateId)}>
+                          Delete
+                        </button>
+                      </td>
+                      <td>
+                      <button className="btn btn-success btn-sm" onClick={() => navigate(`/edit-invoice/${e.estimateId}`)}>
+    Generate Invoice
+  </button>
+                      </td>
                     </tr>
                   ))}
-                  {filteredZones.length === 0 && (
+                  {estimates.length === 0 && (
                     <tr>
-                      <td colSpan="7" className="text-center">No zones available</td>
+                      <td colSpan="11" className="text-center">No estimates available</td>
                     </tr>
                   )}
                 </tbody>

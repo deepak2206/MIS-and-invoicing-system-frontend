@@ -17,8 +17,8 @@ const TopNavbar = () => {
         <Link to="/manage-chain">Manage Chain</Link>
         <Link to="/manage-brand">Manage Brands</Link>
         <Link to="/manage-zone">Manage SubZones</Link>
-        <Link to="#">Manage Estimate</Link>
-        <Link to="#">Manage Invoices</Link>
+        <Link to="/manage-estimate">Manage Estimate</Link>
+        <Link to="/manage-invoice">Manage Invoices</Link>
       </div>
     </div>
   );
