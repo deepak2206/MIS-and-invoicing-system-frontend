@@ -50,6 +50,8 @@ function App() {
         <Route path="/manage-brand" element={<BrandDashboard />} /> {/* ✅ Add this */}
         <Route path="/manage-zone" element={<ZoneDashboard />}/>
         <Route path="/add-zone" element={<EditZone />}/>
+        <Route path="/edit-zone/:id" element={<EditZone />} />
+
       </Routes>
     </BrowserRouter>
   );
