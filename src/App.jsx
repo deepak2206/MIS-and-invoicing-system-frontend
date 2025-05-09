@@ -14,11 +14,13 @@ import ZoneDashboard from "./components/ZoneDashboard";
 import EditZone from "./components/EditZone";
 import EstimateDashboard from "./components/EstimateDashboard";
 import EditEstimate from "./components/EditEstimate";
-import InvoiceDashboard from "./components/ManageInvoice";
-import ManageInvoice from "./components/ManageInvoice";
-import EditInvoice from "./components/EditInvoice";
 
+import GenerateInvoice from "./components/GenerateInvoice";
+import InvoiceDashboard from "./components/InvoiceDashboard";
 function App() {
+
+ 
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -61,11 +63,11 @@ function App() {
         <Route path="/edit-zone/:id" element={<EditZone />} />
         <Route path="/edit-estimate/:id" element={<EditEstimate />} />
         <Route path="/add-estimate" element={<EditEstimate />} />
-        <Route path="/manage-invoice" element={<ManageInvoice />} />
+        
         <Route path="/add-zone" element={<EditZone />} />
-        <Route path="/edit-invoice/:id" element={<EditInvoice />} />
-        <Route path="/update-invoice/:id" element={<EditInvoice />} />
-        <Route path="/edit-invoice/:id" element={<EditInvoice />} />
+       
+        <Route path="/invoices" element={<InvoiceDashboard />} />
+        <Route path="/generate-invoice/:estimateId" element={<GenerateInvoice />} />
       </Routes>
     </BrowserRouter>
   );

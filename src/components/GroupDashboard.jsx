@@ -131,9 +131,12 @@ const GroupDashboard = () => {
                         </button>
                       </td>
                       <td>
-                      <button className="btn btn-success btn-sm" onClick={() => navigate(`/edit-invoice/${e.estimateId}`)}>
-    Generate Invoice
-  </button>
+                      <button
+        className="btn btn-success btn-sm"
+        onClick={() => navigate(`/generate-invoice/${e.estimateId}`)}
+      >
+        Generate Invoice
+      </button>
                       </td>
                     </tr>
                   ))}
