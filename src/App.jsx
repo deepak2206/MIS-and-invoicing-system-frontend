@@ -67,7 +67,15 @@ function App() {
         <Route path="/add-zone" element={<EditZone />} />
        
         <Route path="/invoices" element={<InvoiceDashboard />} />
-        <Route path="/generate-invoice/:estimateId" element={<GenerateInvoice />} />
+        <Route
+  path="/generate-invoice/:estimateId"
+  element={
+    <PrivateRoute>
+      <GenerateInvoice />
+    </PrivateRoute>
+  }
+/>
+
       </Routes>
     </BrowserRouter>
   );
