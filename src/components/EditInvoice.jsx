@@ -4,15 +4,13 @@ import { getEstimateById } from '../services/estimateService';
 import { addInvoice, getInvoiceById, updateInvoice } from '../services/invoiceService';
 
 const EditInvoice = () => {
-  const { id } = useParams(); // Could be estimateId or invoiceId
+  const { id } = useParams();
   const navigate = useNavigate();
-
-  // Detect if the route is update (edit existing invoice) or generate (from estimate)
   const isUpdateMode = window.location.pathname.includes('/update-invoice');
 
   const [form, setForm] = useState({
     invoiceNo: '',
-    estimateId: id || '',
+    estimateId: '',
     chainId: '',
     serviceDetails: '',
     qty: '',
@@ -26,58 +24,49 @@ const EditInvoice = () => {
   });
 
   useEffect(() => {
-    const loadEstimate = async () => {
+    const fetchData = async () => {
       try {
-        const res = await getEstimateById(id);
-        const est = res.data;
-        setForm(prev => ({
-          ...prev,
-          estimateId: est.estimateId,
-          chainId: est.chain.chainId,
-          serviceDetails: est.service,
-          qty: est.qty,
-          costPerQty: est.costPerUnit,
-          amountPayable: est.totalCost,
-          amountPaid: est.totalCost,
-          balance: 0,
-          dateOfService: est.deliveryDate,
-          deliveryDetails: est.deliveryDetails
-        }));
+        if (isUpdateMode) {
+          const res = await getInvoiceById(id);
+          const inv = res.data;
+          setForm({
+            invoiceNo: inv.invoiceNo,
+            estimateId: inv.estimate.estimateId,
+            chainId: inv.chain.chainId,
+            serviceDetails: inv.serviceDetails,
+            qty: inv.qty,
+            costPerQty: inv.costPerQty,
+            amountPayable: inv.amountPayable,
+            amountPaid: inv.amountPaid,
+            balance: inv.balance,
+            dateOfService: inv.deliveryDate,
+            deliveryDetails: inv.deliveryDetails,
+            emailId: inv.emailId
+          });
+        } else {
+          const res = await getEstimateById(id);
+          const est = res.data;
+          setForm(prev => ({
+            ...prev,
+            invoiceNo: Math.floor(1000 + Math.random() * 9000), // generate 4-digit invoice number
+            estimateId: est.estimateId,
+            chainId: est.chain.chainId,
+            serviceDetails: est.service,
+            qty: est.qty,
+            costPerQty: est.costPerUnit,
+            amountPayable: est.totalCost,
+            amountPaid: est.totalCost,
+            balance: 0,
+            dateOfService: est.deliveryDate,
+            deliveryDetails: est.deliveryDetails
+          }));
+        }
       } catch (err) {
-        console.error('Estimate load failed:', err);
-        alert('Estimate not found');
+        console.error('Data load failed:', err);
+        alert(isUpdateMode ? 'Invoice not found' : 'Estimate not found');
       }
     };
-
-    const loadInvoice = async () => {
-      try {
-        const res = await getInvoiceById(id);
-        const inv = res.data;
-        setForm({
-          invoiceNo: inv.invoiceNo,
-          estimateId: inv.estimateId,
-          chainId: inv.chainId,
-          serviceDetails: inv.serviceDetails,
-          qty: inv.qty,
-          costPerQty: inv.costPerQty,
-          amountPayable: inv.amountPayable,
-          amountPaid: inv.amountPaid,
-          balance: inv.balance,
-          dateOfService: inv.dateOfService,
-          deliveryDetails: inv.deliveryDetails,
-          emailId: inv.emailId
-        });
-      } catch (err) {
-        console.error('Invoice load failed:', err);
-        alert('Invoice not found');
-      }
-    };
-
-    if (isUpdateMode) {
-      loadInvoice();
-    } else {
-      loadEstimate();
-    }
+    fetchData();
   }, [id, isUpdateMode]);
 
   const handleChange = (e) => {
@@ -91,11 +80,27 @@ const EditInvoice = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const payload = {
+        invoiceNo: parseInt(form.invoiceNo),
+        estimate: { estimateId: parseInt(form.estimateId) },
+        chain: { chainId: parseInt(form.chainId) },
+        serviceDetails: form.serviceDetails,
+        qty: parseInt(form.qty),
+        costPerQty: parseFloat(form.costPerQty),
+        amountPayable: parseFloat(form.amountPayable),
+        amountPaid: parseFloat(form.amountPaid),
+        balance: parseFloat(form.balance),
+        deliveryDate: form.dateOfService,
+        deliveryDetails: form.deliveryDetails,
+        emailId: form.emailId
+      };
+
       if (isUpdateMode) {
-        await updateInvoice(id, form);
+        await updateInvoice(id, payload);
       } else {
-        await addInvoice(form);
+        await addInvoice(payload);
       }
+
       navigate('/manage-invoice');
     } catch (err) {
       console.error('Invoice submission failed:', err);
@@ -107,17 +112,40 @@ const EditInvoice = () => {
     <div className="container mt-4">
       <h4>{isUpdateMode ? 'Update' : 'Generate'} Invoice</h4>
       <form onSubmit={handleSubmit} className="w-75">
-        {isUpdateMode && <input className="form-control mb-2" value={form.invoiceNo} placeholder="Invoice No" disabled />}
-        <input className="form-control mb-2" value={form.estimateId} placeholder="Estimate ID" disabled />
-        <input className="form-control mb-2" value={form.chainId} placeholder="Chain ID" disabled />
-        <input className="form-control mb-2" value={form.serviceDetails} placeholder="Service Provided" disabled />
-        <input className="form-control mb-2" value={form.qty} placeholder="Quantity" disabled />
-        <input className="form-control mb-2" value={form.costPerQty} placeholder="Cost per Quantity" disabled />
-        <input className="form-control mb-2" value={form.amountPayable} placeholder="Amount Payable" disabled />
-        <input className="form-control mb-2" value={form.amountPaid} placeholder="Amount Paid in Rs" disabled />
-        <input className="form-control mb-2" value={form.balance} placeholder="Balance" disabled />
-        <input className="form-control mb-2" value={form.dateOfService} placeholder="Delivery Date" disabled />
-        <textarea className="form-control mb-2" rows="3" value={form.deliveryDetails} placeholder="Other Delivery Details" disabled />
+        <label>Invoice No</label>
+        <input className="form-control mb-2" value={form.invoiceNo} disabled />
+
+        <label>Estimate ID</label>
+        <input className="form-control mb-2" value={form.estimateId} disabled />
+
+        <label>Chain ID</label>
+        <input className="form-control mb-2" value={form.chainId} disabled />
+
+        <label>Service Provided</label>
+        <input className="form-control mb-2" value={form.serviceDetails} disabled />
+
+        <label>Quantity</label>
+        <input className="form-control mb-2" value={form.qty} disabled />
+
+        <label>Cost per Quantity</label>
+        <input className="form-control mb-2" value={form.costPerQty} disabled />
+
+        <label>Amount Payable</label>
+        <input className="form-control mb-2" value={form.amountPayable} disabled />
+
+        <label>Amount Paid (Rs)</label>
+        <input className="form-control mb-2" value={form.amountPaid} disabled />
+
+        <label>Balance</label>
+        <input className="form-control mb-2" value={form.balance} disabled />
+
+        <label>Delivery Date</label>
+        <input className="form-control mb-2" value={form.dateOfService} disabled />
+
+        <label>Other Delivery Details</label>
+        <textarea className="form-control mb-2" rows="3" value={form.deliveryDetails} disabled />
+
+        <label>Email ID</label>
         <input
           className="form-control mb-3"
           name="emailId"
@@ -126,6 +154,7 @@ const EditInvoice = () => {
           onChange={handleChange}
           required
         />
+
         <button className="btn btn-primary">{isUpdateMode ? 'Update Invoice' : 'Generate Invoice'}</button>
       </form>
     </div>

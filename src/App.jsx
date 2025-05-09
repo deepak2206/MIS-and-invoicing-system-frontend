@@ -1,22 +1,22 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Register from './components/Register';
-import GroupDashboard from './components/GroupDashboard';
-import EditGroup from './components/EditGroup';
-import EditDetails from './components/EditDetails';
-import PrivateRoute from './components/PrivateRoute'; // If using protected routes
-import ChainDashboard from './components/ChainDashboard';
-import AddChain from './components/AddChain';
-import EditChain from './components/EditChain';
-import BrandDashboard from './components/BrandDashboard';
-import ZoneDashboard from './components/ZoneDashboard';
-import EditZone from './components/EditZone';
-import EstimateDashboard from './components/EstimateDashboard';
-import EditEstimate from './components/EditEstimate';
-import InvoiceDashboard from './components/ManageInvoice';
-import ManageInvoice from './components/ManageInvoice';
-import EditInvoice from './components/EditInvoice';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import GroupDashboard from "./components/GroupDashboard";
+import EditGroup from "./components/EditGroup";
+import EditDetails from "./components/EditDetails";
+import PrivateRoute from "./components/PrivateRoute"; // If using protected routes
+import ChainDashboard from "./components/ChainDashboard";
+import AddChain from "./components/AddChain";
+import EditChain from "./components/EditChain";
+import BrandDashboard from "./components/BrandDashboard";
+import ZoneDashboard from "./components/ZoneDashboard";
+import EditZone from "./components/EditZone";
+import EstimateDashboard from "./components/EstimateDashboard";
+import EditEstimate from "./components/EditEstimate";
+import InvoiceDashboard from "./components/ManageInvoice";
+import ManageInvoice from "./components/ManageInvoice";
+import EditInvoice from "./components/EditInvoice";
 
 function App() {
   return (
@@ -49,25 +49,23 @@ function App() {
           }
         />
         <Route path="*" element={<Login />} />
-        <Route path="/manage-chain" element={<ChainDashboard />} /> {/* ✅ Add this */}
+        <Route path="/manage-chain" element={<ChainDashboard />} />{" "}
+        {/* ✅ Add this */}
         <Route path="/add-chain" element={<AddChain />} />
         <Route path="/edit-chain/:id" element={<EditChain />} />
-        <Route path="/manage-brand" element={<BrandDashboard />} /> {/* ✅ Add this */}
-        <Route path="/manage-zone" element={<ZoneDashboard />}/>
-        <Route path="/manage-estimate" element={<EstimateDashboard />}/>
-        <Route path="/add-zone" element={<EditZone />}/>
+        <Route path="/manage-brand" element={<BrandDashboard />} />{" "}
+        {/* ✅ Add this */}
+        <Route path="/manage-zone" element={<ZoneDashboard />} />
+        <Route path="/manage-estimate" element={<EstimateDashboard />} />
+        <Route path="/add-zone" element={<EditZone />} />
         <Route path="/edit-zone/:id" element={<EditZone />} />
         <Route path="/edit-estimate/:id" element={<EditEstimate />} />
-        
-        <Route path="/add-estimate" element={<EditEstimate />}/>
-
-
-        <Route path="/manage-invoice" element={<ManageInvoice />}/>
-        <Route path="/add-zone" element={<EditZone />}/>
+        <Route path="/add-estimate" element={<EditEstimate />} />
+        <Route path="/manage-invoice" element={<ManageInvoice />} />
+        <Route path="/add-zone" element={<EditZone />} />
         <Route path="/edit-invoice/:id" element={<EditInvoice />} />
-<Route path="/update-invoice/:id" element={<EditInvoice />} />
-
-
+        <Route path="/update-invoice/:id" element={<EditInvoice />} />
+        <Route path="/edit-invoice/:id" element={<EditInvoice />} />
       </Routes>
     </BrowserRouter>
   );
